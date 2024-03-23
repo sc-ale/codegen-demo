@@ -6,4 +6,7 @@
 from chat import chat
 
 def main(args):
+    # TODO: remove these 2 lines
+    print("ARGS IN OPEN=")
+    print(args)
     return chat(args)

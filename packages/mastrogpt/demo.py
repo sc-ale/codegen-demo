@@ -7,6 +7,9 @@ def main(args):
     chess = None
     message = None
     html = None
+    # TODO: remove these 2 print lines
+    print("args=")
+    print(args)
 
     # initialize state
     title =  "MastroGPT Demo"
