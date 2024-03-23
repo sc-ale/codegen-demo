@@ -34,20 +34,17 @@ window.addEventListener('click', function(event) {
             document.getElementById("_display_container_").appendChild(document.createTextNode("Please provide a name for the function"));
             return
         }
-        // to get the credentials
-        fetch("/api/my/mastrogpt/saveFunctions")
-        /*
+        
+        let infoFunction = getCode()
+        infoFunction = {name: nameFunction, ...infoFunction}
         fetch("/api/my/mastrogpt/saveFunctions", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify({name: nameFunction})
+            body: JSON.stringify(infoFunction)
         })
-        */
         .then(r => r.json())
         .then( (data) => {
-            console.log(data)
-            let codeFunction = getCode()
-            sendServelessFunction2save(data.AUTH, data.APIHOST, nameFunction, codeFunction.code, codeFunction.language)
+            console.log(data) 
         })
         .catch(e => {
             // content.innerHTML="<h1>Error!</h1><p>Check logs for details.</p>"
@@ -55,36 +52,11 @@ window.addEventListener('click', function(event) {
         })
     }
 });
+
 // get the code for the function to save
 function getCode() {
     let language = document.getElementById("language").textContent
     let code = document.getElementById("code").textContent
-    let res = {language: language, code: code}
+    let res = {kind: language, code: code}
     return res
-}
-
-function sendServelessFunction2save(AUTH, APIHOST, nameFunction, code, kind) {
-    const url = `https://${APIHOST}/api/v1/namespaces/_/actions/${nameFunction}?overwrite=true`;
-    const body = {
-      namespace: "_",
-      name: nameFunction,
-      exec: {
-        kind: kind,
-        code: code
-      }
-    };
-    console.log(body, AUTH)
-  /*
-    fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic ' + btoa(AUTH)
-      },
-      body: JSON.stringify(body)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => console.error('Error:', error));
-    */
 }
