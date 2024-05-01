@@ -37,17 +37,20 @@ window.addEventListener('click', function(event) {
         
         let infoFunction = getCode()
         infoFunction = {name: nameFunction, ...infoFunction}
-        fetch("/api/my/mastrogpt/saveFunctions", {
+
+        fetch("/api/my/mastrogpt/saveFunction", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(infoFunction)
         })
-        .then(r => r.json())
-        .then( (data) => {
-            console.log(data) 
+        .then(r => {
+            if (r.ok) {
+                let content =  document.getElementById("_display_container_");
+                content.innerHTML="<h1>The function has been saved successfully!</h1><p>Check in actions list for details.</p>"
+            }
         })
         .catch(e => {
-            // content.innerHTML="<h1>Error!</h1><p>Check logs for details.</p>"
+            content.innerHTML="<h1>Error!</h1><p>Check logs for details.</p>"
             console.log(e)
         })
     }
@@ -55,7 +58,8 @@ window.addEventListener('click', function(event) {
 
 // get the code for the function to save
 function getCode() {
-    let language = document.getElementById("language").textContent
+    //let language = document.getElementById("language").textContent
+    let language = "python:3"
     let code = document.getElementById("code").textContent
     let res = {kind: language, code: code}
     return res
