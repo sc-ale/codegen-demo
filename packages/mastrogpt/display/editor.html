@@ -6,12 +6,23 @@
 #code, #language {
     display: none;
 }
+#sv-srvlss-fun-div {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.8rem;
+    column-gap: 0.4rem;
+    align-items: left;
+}
 </style>
 <span id="language">{{language}}</span>
 <pre id="code">{{{code}}}</pre>
 <iframe id="iframe-editor" src="/editor.html"></iframe>
-
-<label>Name of the function to save:
-    <input aria-label="insert the name of the function to save" type="text" placeholder="insert a name..." id="nameFun2sv"/>
-</label>
-<button type="submit" id="sv-srvlss-fun-btn">save</button>
+<div id="sv-srvlss-fun-div">
+    <label>Name of the function to save:
+        <input aria-label="insert the name of the function to save" type="text" placeholder="insert a name..." id="nameFun2sv"/>
+    </label>
+    <div id="sv-srvlss-fun-btns">
+        <button type="submit" id="sv-srvlss-fun-btn">save</button>
+    </div>
+</div>

@@ -19,8 +19,15 @@
         <script>
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/github");
+            
             editor.setValue(window.parent.document.getElementById("code").innerText)
             editor.session.setMode("ace/mode/"+window.parent.document.getElementById("language").innerText);
+            sessionStorage.setItem("code", editor.getValue());
+
+            editor.session.on('change', function(delta) {
+                let newCode = editor.getValue();
+                sessionStorage.setItem("code", newCode);
+            });
         </script>
     </div>
 </body>

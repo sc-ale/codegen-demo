@@ -1,7 +1,7 @@
 #--web true
 
 def main(args):
-    
+    print("\n\nARGS ===\n\n",args)
     language = None
     code = None
     chess = None

@@ -16,7 +16,7 @@ window.addEventListener('message', async function(ev) {
         console.log(t)
         if(t !=  "") {
             let content =  document.getElementById("_display_container_");
-            content.innerHTML = t;
+            content.innerHTML = t; // Vulnerable to XSS attacks
         }
     })
     .catch(e => {
@@ -38,6 +38,7 @@ window.addEventListener('click', function(event) {
         let infoFunction = getCode()
         infoFunction = {name: nameFunction, ...infoFunction}
 
+        console.log(infoFunction)
         fetch("/api/my/mastrogpt/saveFunction", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json'},
@@ -45,8 +46,16 @@ window.addEventListener('click', function(event) {
         })
         .then(r => {
             if (r.ok) {
-                let content =  document.getElementById("_display_container_");
-                content.innerHTML="<h1>The function has been saved successfully!</h1><p>Check in actions list for details.</p>"
+                if (!document.getElementById("invoke-srvless-fun")) {
+                    let button2test = document.createElement("button");
+                    button2test.innerHTML = "Invoke function";
+                    button2test.setAttribute("style", "margin-left: 2rem;")
+                    button2test.setAttribute("id", "invoke-srvless-fun")
+                    button2test.addEventListener("click", function() {
+                        invokeFunction(infoFunction.name, "")
+                    })
+                    document.getElementById("sv-srvlss-fun-btns").appendChild(button2test);                
+                }
             }
         })
         .catch(e => {
@@ -59,8 +68,23 @@ window.addEventListener('click', function(event) {
 // get the code for the function to save
 function getCode() {
     //let language = document.getElementById("language").textContent
-    let language = "python:3"
-    let code = document.getElementById("code").textContent
+    let language = "python:310"
+    //let code = document.getElementById("code").textContent
+    let code = sessionStorage.getItem("code");
     let res = {kind: language, code: code}
     return res
+}
+
+function invokeFunction(nameFunction, params) {
+    let invocation = {nameFunction: nameFunction, params: params}
+    fetch("/api/my/mastrogpt/testServerlessFunction", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(invocation)
+    })
+    .then(r => {
+        if (r.ok) {
+            console.log(r)
+        }
+    })
 }

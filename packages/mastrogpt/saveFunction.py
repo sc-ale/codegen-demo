@@ -6,6 +6,7 @@ import requests
 import json
 
 def main(args):
+    print("\n\nARGS ===\n\n",args)
     auth_key = args.get("AUTH")
     nameFunction, kind, code = args.get("name"), args.get("kind"), args.get("code")
    
@@ -18,14 +19,14 @@ def main(args):
         'namespace': "_",
         'name': nameFunction,
         'exec': {
-            'kind':kind,
+            'kind': kind,
             'code': code
         }
     }
     headers = {
         "Content-Type": "application/json"
     }
-    
+    print("\nBODY ===\n\n",body)
     response = None
     try:
         res = requests.put(url=url, json=body, headers=headers, auth=(auth_key.split(':')[0], auth_key.split(':')[1]))
